@@ -1,8 +1,11 @@
+import os
 from sys import prefix
 
 import uvicorn
 from fastapi import FastAPI
 from fastapi import Request, Response, APIRouter
+from starlette.middleware.cors import CORSMiddleware
+
 from apps.todoList.todo import todo
 from apps.student.student import student_app
 from tortoise.contrib.fastapi import register_tortoise
@@ -25,6 +28,7 @@ async def add_process_time_header(request: Request, call_next):
 
 app.include_router(todo, prefix='/todo', tags=['todo'])
 app.include_router(student_app, prefix='/student', tags=['student'])
+
 app.include_router(class_view_router, prefix='/test', tags=['test'])
 
 ##注册数据库
@@ -32,8 +36,13 @@ register_tortoise(
     app=app,
     config=TORTOISE_ORM,
     generate_schemas=True,  # 如果数据库为空，则自动生成对应表单，生产环境不要开
-    # add_exception_handlers=True,  # 生产环境不要开，会泄露调试信息
+    add_exception_handlers=True,  # 生产环境不要开，会泄露调试信息
 )
+origins = ["*"]
+
+app.add_middleware(CORSMiddleware, allow_origins=["*"])  #noqa
+
 
 if __name__ == '__main__':
-    uvicorn.run("main:app", host="0.0.0.0", port=5800, reload=True, workers=2)
+    os.environ['PYTHONASYNCIODEBUG'] = '1'
+    uvicorn.run("main:app", host="0.0.0.0", port=5800, reload=True, workers=2,loop="uvloop")

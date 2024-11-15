@@ -11,6 +11,8 @@ fastapi = "0.110.2"
 tortoise-orm = {extras = ["accel"], version = "^0.21.7"}
 aerich = "^0.7.2"
 fastapi-views = "^0.3.2"
+httptools = "^0.6.4"
+fastapi-admin = "^1.0.4"
 
 
 

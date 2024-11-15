@@ -12,7 +12,17 @@ Success write config to pyproject.toml
 
  ```
 根据模型生成一个sql 
+```shell
 
-❯ aerich init-db
+aerich init-db
 Success create app migrate location migrations/models
 Success generate schema for app "models"
+
+```
+
+更新数据库
+
+```shell
+
+
+```
